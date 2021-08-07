@@ -1,0 +1,106 @@
+.btn {
+    // & is added as well because .btn can also be applied to <button> element. <button> element doesn't have link and visited pseudo class like a <a> element
+    &,
+    &:link,
+    &:visited {
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem 4rem;
+        display: inline-block;
+        border-radius: 10rem;
+        transition: all .2s;
+        font-size: $default-font-size;
+        position: relative;
+
+        // below css only applies to only <button> element
+        border: none;
+        cursor: pointer;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 1rem 2rem rgba($color-black, 0.2);
+
+        &::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+    }
+
+    // :focus pseudo class is here to handle <button> elements because <button> elements don't have :active pseudo class like button element
+    &:active,
+    &:focus {        
+        transform: translateY(-1px);
+        box-shadow: 0px .5rem 1rem rgba($color-black, 0.2);
+
+        // When button is in focus make outline none
+        outline: none;
+    }
+
+    &::after {
+        content: "";
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border-radius: 10rem;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: -1;
+        transition: all 0.4s;
+        background-color: white;
+    }
+
+    &--animated {
+        animation: moveInBottom 0.5s ease-out 0.75s;
+        // The animation-fill-mode property is used to specify that values which are applied by the animation before and after it is executing.
+        // Before playing the first keyframe or after playing the last keyframe CSS animations do not affect the element. The animation-fill-mode property can override this behavior.
+        // This property value is used to set the element to the first keyframe value before start the animation.
+        // i.e., intially button will be hidden and positioned 3rem down (See moveInBottom animation)
+        // Without below css - initially button will be placed at its original position when animation begins element is abruptly shifted to 0% stage of animation which is not intended
+        animation-fill-mode: backwards;
+    }
+
+    &--white {
+        background-color: $color-white;
+        color: $color-grey-dark;
+
+        &::after {
+            background-color: $color-white;
+        }        
+    }
+
+    &--green {
+        background-color: $color-primary;
+        color: $color-white;
+
+        &::after {
+            background-color: $color-primary !important;
+        }
+    }
+}
+
+.btn-text {
+    &:link,
+    &:visited {
+        font-size: $default-font-size;
+        color: $color-primary;
+        display: inline-block;
+        text-decoration: none;
+        border-bottom: 1px solid $color-primary;
+        padding: 3px;
+        transition: all .2s;
+    }
+
+    &:hover {
+        background-color: $color-primary;
+        color: $color-white;
+        box-shadow: 0px 1rem 2rem rgba($color-black, .15);
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        box-shadow: 0px .5rem 2rem rgba($color-black, .15);
+        transform: translateY(0);
+    }
+}

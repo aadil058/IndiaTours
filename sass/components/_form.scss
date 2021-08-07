@@ -1,0 +1,119 @@
+.form {
+    &__group:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    &__input {
+        font-size: 1.5rem;
+        // By default webpage's font-family is not inherited by the input element. So we force it.
+        font-family: inherit;
+        // Same for font color
+        color: inherit;
+        padding: 1.5rem 2rem;
+        border-radius: 2px;
+        background-color: $color-white;
+        border: none;
+        // So that input fields don't jump up and down when selected/descelected
+        border-bottom: 3px solid transparent;
+        width: 90%;
+        // Displays an element as a block element (like <p>). It starts on a new line, and takes up the whole width, So that label shifts to the next line
+        display: block;
+        transition: all 0.3s;   // In order for bottom border transitions to be smooth
+
+        @include respond(tablet-port) {
+            width: 100%;
+        }        
+
+        // Trick to assign color to placeholder
+        &::-webkit-input-placeholder {
+            color: $color-grey-dark-2;
+        }
+
+        // &:focus:invalid {
+        //     border-bottom: 3px solid $color-secondary-dark;
+        // }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 1rem 2rem rgba($color-black, .1);
+            border-bottom: 3px solid $color-primary;
+
+            // Only when field is focused and current input is invalid apply the given css
+            &:invalid {
+                border-bottom: 3px solid $color-secondary-dark;
+            }
+        }
+    }
+
+    &__label {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-left: 2rem;
+        margin-top: 0.7rem;
+        display: block;
+        transition: all 0.3s;
+    }
+
+    // The :placeholder-shown CSS pseudo-class represents any <input> or <textarea> element that is currently displaying placeholder text.
+    // Sibling selector (Note: Order Matters)
+    // As soon as we start typing placeholder is not shown and below css properties will not be in effect.
+    &__input:placeholder-shown + &__label {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4rem);
+    }
+
+    &__radio-group {
+        width: 45%; // 45% of 50% card (if we give 50% of 50% to each radio-group then they will not fit in single line due to paddings and margins)
+        display: inline-block;
+
+        @include respond(tablet-port) {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__radio-input {
+        display: none;
+    }
+
+    &__radio-label {
+        font-size: $default-font-size;
+        cursor: pointer;
+        position: relative; // because __radio-button is absolute
+        padding-left: 5rem;
+    }
+
+    &__radio-button {
+        width: 3rem;
+        height: 3rem;
+        border: 5px solid $color-primary;
+        border-radius: 50%;
+        display: inline-block;
+        position: absolute; // After absolute positioning, radio button will overlap text. We add left-padding in parent (radio-label) to get rid of overlapping.
+        left: 0;
+        top: -0.4rem;
+
+        // Inner-circle will be created using pseudo element
+        &::after {
+            // content and display are mandatory for pseudo elements
+            content: "";
+            display: block;
+            height: 1.3rem;
+            width: 1.3rem;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: $color-primary;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+    }
+
+    // Select sibling of hidden radio input button and then its descendant (custom radio input button)
+    &__radio-input:checked + &__radio-label &__radio-button::after {
+        opacity: 1;
+    }
+}

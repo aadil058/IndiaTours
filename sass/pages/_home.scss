@@ -1,0 +1,96 @@
+.section-about {
+    background-color: $color-grey-light-1;
+
+    // 25rem vertical and 0 horizontal
+    padding: 25rem 0;
+    
+    // 95vh - 75vh is the empty space at the bottom right corner of header
+    // We want to cover that empty space with grey-light background thats why we shifted "section-about" up by 20vh
+    margin-top: -20vh;
+
+    @include respond(phone) {
+        padding: 20rem 0;
+    }
+}
+
+.section-features {
+    padding: 20rem 0;
+    background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8));
+    background-size: cover;
+    
+    // -10rem is obtained using hit and trial
+    // It is required to cover the top left univisble part
+    margin-top: -10rem;
+
+    transform: skewY(-7deg);
+
+    // We can skew feature boxes by positive 7deg to negate section-features skewing
+    // > direct child of & (& == section-features)
+    // * all element
+    // & > * => All direct children
+    & > * {
+        transform: skewY(7deg);
+    }
+
+    @include respond(tablet-port) {
+        padding: 10rem 0;
+    }
+}
+
+.section-tours {
+    background-color: $color-grey-light-1;
+    padding: 20rem 0 5rem 0;
+    
+    // value obtained using hit and trial
+    margin-top: -10rem; 
+}
+
+.section-stories {
+    // It is relative because it's child .bg-video is absolute
+    position: relative;
+    padding: 10rem 0;
+
+    @include respond(tablet-port) {
+        padding: 10rem 0;
+    }
+}
+
+.section-book {
+    padding: 15rem 0;
+    background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+
+    @include respond(tablet-port) {
+        padding: 10rem 0;
+    }    
+}
+
+.book {
+    // At 0% we want white, At 50% we want white, Also At 50% we want transparent.
+    // So end result is 0 to 50 white and 50 to 100 transparent tilted at an angle of 105deg
+    background-image: linear-gradient(105deg, rgba($color-grey-light-1, .9) 0%, rgba($color-grey-light-1, .9) 50%, transparent 50%), url('../img/ind-10.jpg');
+    background-size: cover;
+    border-radius: 3px;
+    box-shadow: 0 1.5rem 4rem rgba($color-black, .2);
+
+    @include respond(tablet-land) {
+        background-image: linear-gradient(105deg, rgba($color-grey-light-1, .9) 0%, rgba($color-grey-light-1, .9) 65%, transparent 65%), url('../img/ind-10.jpg');
+    }
+
+    @include respond(tablet-port) {
+        background-image: linear-gradient(to right, rgba($color-grey-light-1, .9) 0%, rgba($color-grey-light-1, .9) 100%), url('../img/ind-10.jpg');
+    }
+
+    &__form {
+        // Gradient is taking half the space and the actual form is inside the left half
+        width: 50%;
+        padding: 6rem;
+
+        @include respond(tablet-land) {
+            width: 65%;
+        }
+
+        @include respond(tablet-port) {
+            width: 100%;
+        }
+    }
+}

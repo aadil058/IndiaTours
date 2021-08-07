@@ -1,0 +1,58 @@
+/* Universal Reset, It is applied to all elements */
+/* https://www.w3schools.com/css/css3_box-sizing.asp */
+*,
+*::after,
+*::before {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: inherit;    // Inherit from body element
+}
+
+body {
+    padding: 3rem;
+    // border-box tells the browser to account for any border and padding in the values you specify for an element's width and height.
+    // If you set an element's width to 100 pixels, that 100 pixels will include any border or padding you added, and the content box will 
+    // shrink to absorb that extra width. This typically makes it much easier to size elements.
+    box-sizing: border-box;
+
+    @include respond(tablet-port) {
+        // No padding for screen < 900
+        padding: 0;
+    }
+}
+
+html {
+    /* Don't use pixel values. In order to avoid overriding browser's font size settings that user can manually change. */
+    /* font-size: 10px; */
+
+    /* 62.5% is equal to 62.5% of default 16px font-size which is equal to 10px. If user changes font-size then this font-size will also change accordingly */
+    // One could argue this font-size belongs to typograhpy but in this case font-size is used to define what one rem should be.
+    // 10px / 16px = 62.5%
+    font-size: 62.5%;   // Translates to 1rem and 1rem == 10px
+
+    // We have designed our webpage such that if font-size changes everything including padding, margins change with it.
+
+    // C. width < 1200
+    @include respond(tablet-land) {
+        font-size: 56.25%; // 1rem == 9px, 9/16 == 56.25%
+    }
+
+    // B. width < 900
+    @include respond(tablet-port) {
+        font-size: 50%; // 1rem == 8px, 8/16 == 50%
+    }
+
+    // A. width < 600
+    @include respond(phone) {
+        font-size: 50%; // 1rem == 8px, 8/16 == 50%
+    }
+
+    // QUESTION: Why order is CBA and not ABC
+    // REASON: Because order matters. Take 400 as an example. All A, B, and C will apply but whichever appear last will take precedence.
+    // We want A for 400 that's why A is last. Similarly for 800 we want B that's why it is after C in CSS file.
+
+    // width > 1800
+    @include respond(big-desktop) {
+        font-size: 75.0%; // 1rem == 12px, 9/16 == 75%
+    }
+}

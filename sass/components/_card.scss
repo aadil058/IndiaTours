@@ -1,0 +1,244 @@
+.card {
+    // perspective is always added to the parent element of element with transform property
+    // The perspective property is used to give a 3D-positioned element some perspective.
+    // The perspective property defines how far the object is from the user. So, a lower value will result in a more intensive 3D effect than a higher value.
+    // When defining the perspective property for an element, it is the CHILD elements that get the perspective view, NOT the element itself.
+    // In this case without perspective property -> card rotation would not look natural and cool. Due to perspective property it would feel like that card is moving towards user while rotating.
+    // 150rem is some very big random value
+    // The lower the value more dramatic the perspective is.
+    // Very very high number like 1500rem would will like it isn't used at all.
+    perspective: 150rem;
+    -moz-perspective: 150rem;
+    position: relative;
+    height: 52rem;
+
+    // NOTE: CARD has two elements within it. One is the card's front side and the other is the card's back side.
+    // Both side are overlapping each other because we used absolute positioning for the card sides.
+
+
+    &__side {
+        height: 52rem;
+        transition: all 0.8s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        
+        // Hide the back part of the element
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/backface-visibility
+        // The backface-visibility CSS property sets whether the back face of an element is visible when turned towards the user.
+        // In simple words it means If we rotate a card backwards by 180deg/-180deg then it will be invisible because it's backside is hidden.
+        // Initially back card (Note: back card not backside of a card) is rotated so front card is visible
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        
+        box-shadow: 0 1.5rem 4rem rgba($color: $color-black, $alpha: .15);
+        border-radius: 3px;
+        // Image inside card will overflow the border-radius causing sharp edges, We should hide it.
+        overflow: hidden;
+
+        &--front {
+            background-color: $color-white;
+        }
+
+        &--back {
+            transform: rotateY(180deg); // Back side is already rotated
+            
+            &-1 {
+                background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark);
+            }
+
+            &-2 {
+                background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+            }
+
+            &-3 {
+                background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark);
+            }
+        }
+    }
+    
+    // &:hover &__side means when we hover the "card" the side should transform
+    &:hover &__side--front {
+        transform: rotateY(-180deg);
+    }
+
+    &:hover &__side--back {
+        transform: rotateY(0deg);
+    }
+
+    // FRONT SIDE STYLING
+    &__picture {
+        background-size: cover;
+        height: 23rem;
+        background-blend-mode: screen;
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+
+        &--1 {
+            // Put a gradient on top of Image. (Note: background blending should be done in order for image to be visible behind the gradient)
+            background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark), url("../img/ind-5.jpg");
+        }
+
+        &--2 {
+            background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark), url("../img/ind-6.jpg");
+        }
+
+        &--3 {
+            background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark), url("../img/ind-7.jpg");
+        }
+    }
+
+    &__heading {
+        width: 75%;
+        font-size: 2.8rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        color: $color-white;
+        text-align: right;
+
+        // We want to place text on top of image. For that we need absolute positioning.
+        position: absolute;
+        top: 12rem;
+        right: 2rem;
+
+        @include respond(phone) {
+            width: 60%;
+        }
+    }
+
+    // it's not a modifier or element of &__heading, that's why it is separate class
+    &__heading-span {
+        padding: 1rem 1.5rem;
+        // The box-decoration-break CSS property specifies how an element's fragments should be rendered when broken across multiple lines, columns, or pages.
+        // Each box fragment is rendered independently with the specified border, padding, and margin wrapping each fragment. The border-radius, border-image, and box-shadow are applied to each fragment independently. 
+        // In short, All fragment after line break will be treated as independent element and all properties will be applied. In this case it's padding.
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+
+        &--1 {
+            background-image: linear-gradient(to right bottom, rgba($color-secondary-light, .85), rgba($color-secondary-dark, .85))
+        }
+
+        &--2 {
+            background-image: linear-gradient(to right bottom, rgba($color-primary-light, .85), rgba($color-primary-dark, .85))
+        }
+
+        &--3 {
+            background-image: linear-gradient(to right bottom, rgba($color-tertiary-light, .85), rgba($color-tertiary-dark, .85))
+        }        
+    }
+
+    &__details {
+        padding: 3rem;
+
+        ul {
+            list-style: none;
+            width: 80%;
+            margin: 0 auto;
+
+            li {
+                text-align: center;
+                font-size: 1.5rem;
+                color: $color-grey-dark;
+                padding: 1rem;
+                &:not(:last-child) {
+                    border-bottom: 1px solid $color-grey-light-2;
+                }
+            }
+        }
+    }
+
+    // BACK SIDE STYLING
+    &__cta {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        // card__cta was bounding the width of the button
+        // button text was breaking into next line, after increasing the width of card__cta the problem was fixed.
+        width: 90%;
+        text-align: center;
+    }
+
+    &__price-box {
+        text-align: center;
+        color: $color-white;
+        margin-bottom: 8rem;
+    }
+
+    &__price-only {
+        font-size: 1.4rem;
+        text-transform: uppercase;
+    }
+
+    &__price-value {
+        font-size: 6rem;
+        font-weight: 100;
+    }
+
+    @include respond(tablet-port) {
+        // We had put height to make front side and back side height same size but we no longer have back side, so we can set it to auto
+        height: auto;
+        border-radius: 3px;
+        background-color: $color-white;
+        box-shadow: 0 1.5rem 4rem rgba($color: $color-black, $alpha: .15);
+    
+        &__side {
+            // Now since we are inside a small screen touch device we don't have hover effect.
+            // As a result back card doesn't make sence and they shouldn't overlap each other. Instead they should be arranged vertically. (Hence position is relative)
+            height: auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: none;
+    
+            &--back {
+                transform: rotateY(0);
+                clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%)
+            }
+        }
+        
+        &:hover &__side--front {
+            transform: rotateY(0);
+        }
+    
+        &:hover &__side--back {
+            transform: rotateY(0);
+        }
+
+        &__details {
+            padding: 0 3rem;
+        }
+    
+        // BACK SIDE STYLING
+        &__cta {
+            position: relative;
+            top: 0%;
+            left: 0%;
+            transform: translate(0);
+    
+            // card__cta was bounding the width of the button
+            // button text was breaking into next line, after increasing the width of card__cta the problem was fixed.
+            width: 100%;
+            text-align: center;
+            padding: 7rem 4rem 4rem 4rem;
+        }
+    
+        &__price-box {
+            text-align: center;
+            color: $color-white;
+            margin-bottom: 3rem;
+        }
+    
+        &__price-only {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+        }
+    
+        &__price-value {
+            font-size: 5rem;
+            font-weight: 100;
+        }        
+    }
+}

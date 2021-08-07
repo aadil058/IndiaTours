@@ -1,0 +1,22 @@
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    // Take complete width and height as parent container.
+    // Basically match parent height. Parent height will be decided by its other content (i.e., header, feedback rows and button).
+    width: 100%;
+    height: 100%;
+
+    z-index: -1;
+    opacity: 0.15;
+
+    &__content {
+        height: 100%;
+        width: 100%;
+        
+        // The object-fit CSS property sets how the content of a replaced element, such as an <img> or <video>, should be resized to fit its container.
+        // Element in this case video will cover its parent while maintaining the aspect ratio.
+        object-fit: cover;
+    }
+}

@@ -1,0 +1,21 @@
+/* Universal Reset, It is applied to all elements */
+/* https://www.w3schools.com/css/css3_box-sizing.asp */
+*,
+*::after,
+*::before {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: inherit;
+}
+
+body {
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
+html {
+  /* Don't use pixel value. To avoid overwriting browser's font size settings that user can manually change. */
+  /* font-size: 10px; */
+  /* 62.5% is equal to 62.5% of default font-size of 16px which is 10px. If user changes font-size then this font-size will also change accordingly */
+  font-size: 62.5%;
+}

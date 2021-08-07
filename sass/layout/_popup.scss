@@ -1,0 +1,116 @@
+.popup {
+    position: fixed;
+    
+    // Initial placement is required for fixed to work in this case
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba($color-black, .8);
+    z-index: 9999;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s;
+
+    // div html element with id popup is a target as soon as book now! buttons are pressed
+    // div html element also has popup css class
+    // so popup:target class becomes active on book now! button press
+    // There can be only one target element at a given time, as soon as other element becomes target this element will not be a target
+    &:target {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &:target &__content {
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+
+    &__close {
+        &:link,
+        &:visited {
+            color: $color-grey-dark;
+            position: absolute;
+            top: 2.5rem;
+            right: 2.5rem;
+            font-size: 3rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all .2s;
+            line-height: 1;
+        }
+
+        &:hover {
+            color: $color-primary;
+        }
+    }
+
+    &__content {
+        @include absCenter;
+        width: 75%;
+        // height: 60%;
+        background-color: $color-white;
+        box-shadow: 0 2rem 4rem rgba($color-black, .2);
+        border-radius: 3px;
+        display: table;
+
+        // Fix images overflowing border radius
+        overflow: hidden;
+
+        // absCenter's transform property should be again copied here
+        // otherwise scale will override translate altogether
+        transform: translate(-50%, -50%) scale(.25);
+
+        transition: all .5s .2s; // .2s is a delay to let black background appear first and then popup 
+    }
+
+    // One technique to put __left and __right side by side is to use float: left on both of them. Problem with this approach is containers will wrap their respective content's height
+    // We can use other technique to give both content exact same height. We use table, table-cells for that. Parent's display type is table and children table-cell
+
+    &__left {
+        width: 33.333333%;
+        // float: left;
+        display: table-cell;
+
+        @include respond(tablet-port) {
+            width: 0%;
+        }
+    }
+
+    &__right {
+        width: 66.3333337%;
+        // float: left;
+        display: table-cell;
+        // The vertical-align property sets the vertical alignment of an element.
+        vertical-align: middle;
+
+        padding: 3rem 5rem;
+
+        @include respond(tablet-port) {
+            padding: 2.5rem 2.5rem;
+        }
+    }
+
+    &__img {
+        // Entire parent container width
+        display: block;
+        width: 100%;
+    }
+
+    &__text {
+        font-size: 1.4rem;
+        margin-bottom: 4rem;
+
+        // Split text in two column
+        column-count: 2;
+        column-gap: 4rem;
+        column-rule: 1px solid $color-grey-light-2;  // Separator between two column
+
+        hyphens: auto;
+
+        @include respond(tablet-port) {
+            column-count: 1;
+        }
+    }
+}

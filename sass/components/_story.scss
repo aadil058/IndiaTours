@@ -1,0 +1,101 @@
+.story {
+    width: 75%;
+    padding: 6rem;
+
+    // center horizontally
+    margin: 0 auto;
+    
+    // 6 (same as all sides) + 3 (taken up by story__shape's translateX on left side)
+    padding-left: 9rem;
+    
+    box-shadow: 0 3rem 6rem rgba($color-black, .1);
+    background-color: rgba($color-white, 0.60); // To make background opaque
+    border-radius: 3px;
+    
+    // Paragraph will inherit it
+    font-size: $default-font-size;
+    transform: skewX(-12deg);
+
+    @include respond(tablet-port) {
+        width: 100%;
+        padding: 4rem;
+        padding-left: 7rem;
+    }
+
+    @include respond(phone) {
+        transform: skewX(0);
+    }    
+
+    // All direct child
+    & > * {
+        // Negate content skewX
+        // It won't work for &__shape because it already has a transform property that will override thise
+        transform: skewX(12deg);
+
+        @include respond(phone) {
+            transform: skewX(0);
+        }    
+    }
+
+    &__shape {
+        width: 14rem;
+        height: 14rem;
+
+        // The shape-outside CSS property defines a shape—which may be non-rectangular—around which adjacent inline content should wrap. By default, inline content wraps around its margin box; shape-outside provides a way to customize this wrapping, making it possible to wrap text around complex objects rather than simple boxes.
+        // float is a must for this property
+        shape-outside: circle(50% at 50% 50%);
+        clip-path: circle(50% at 50% 50%);
+
+        // Make content float around it. Without this property shape will take its own row.
+        float: left;
+
+        transform: translateX(-3rem) skewX(12deg);
+
+        // story__caption is absolute. So an ancestor needs to be positioned.
+        position: relative;
+
+        @include respond(phone) {
+            width: 12rem;
+            height: 12rem;            
+            transform: translateX(-3rem) skewX(0);
+        }    
+    
+    }
+
+    // Flexible images in responsive design always need width/height without exception
+    // Without it image will go out of story__shape and take its natural size
+    &__image {
+        // Height because width > height for this image,,, If we use width then vertically image won't fill the story__shape cirlce
+        // 100% height of story_shape i.e., 14rem
+        height: 100%;
+
+        // Still image is not centered because top-left corner of image is aligned to top-left corner of story__shape and height < width
+        transform: translateX(-3rem) scale(1.4);
+        transition: all .5s;
+    }
+
+    &__caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 0%); // Initially text needs to be down and hidden (that's why on Y-axis caption is not centered). When hovered it will go up in the center
+        color: $color-white;
+        text-transform: uppercase;
+        font-size: 1.7rem;
+        text-align: center;
+        opacity: 0;
+        transition: all .5s;
+    }
+
+    // As soon as story is hovered we want to change the caption
+    &:hover &__caption {
+        opacity: 1;
+        // To center it perfectly
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover &__image {
+        transform: translateX(-3rem) scale(1);
+        filter: blur(3px) brightness(80%);
+    }
+}

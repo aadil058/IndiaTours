@@ -1,0 +1,41 @@
+.header {
+    height: 95vh;
+    background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)), url("../img/hero.png");
+    // Resize the background image to cover the entire container, even if it has to stretch the image or cut a little bit off one of the edges
+    background-size: cover;
+    // Resizing of background will be done around the top. It will be the reference point. Top part of the background will always touch the top part of the container.
+    background-position: top;
+    
+    // (75% == 75% of 95vh) && (75vh = 75% of 100vh)
+    clip-path: polygon(0% 0%, 100% 0%, 100% 75vh, 0% 100%);
+
+    position: relative;
+
+    @include respond(phone) {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 0% 100%);
+    }
+
+    &__logo-box {
+        position: absolute;
+        top: 2.5rem;
+        left: 4rem;
+    }
+
+    &__logo {
+        height: 6rem;
+    }
+
+    &__text-box {
+        width: 90%;
+        
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+
+        @include respond(phone) {
+            top: 45%;
+        }
+    }
+}

@@ -1,0 +1,83 @@
+.composition {
+    position: relative;
+
+    &__photo {
+        // Try to set width of images in percentages,, because it will nicely scale for different viewports
+        width: 55%; // 55% of width of parent (i.e., 1/2 Column) container
+        box-shadow: 0 1.5rem 4rem rgba($color-black, .4);
+        border-radius: 2px;
+
+        // To put image on top of each other best way is to use absolute
+        // Absolute element will refer to its first parent with position set to something, in this case we want it to be "composition" so we set position for "composition"
+        position: absolute;
+        z-index: 10;
+        transition: all .2s;
+
+        // create offset between element and its outline
+        // Without below line outline will appear as normal border
+        outline-offset: 2rem;
+
+        @include respond(tablet-port) {
+            // We don't need absolute positioning for low scren. 
+            // And relative is required for float to work in this case.
+            position: relative; 
+            float: left;
+            width: 33.33333%;
+            box-shadow: 0 1.5rem 3rem rgba($color-black, .2);
+        }
+
+        &--p1 {
+            left: 0;
+            top: -2rem;
+
+            @include respond(tablet-port) {
+                top: 0;
+                transform: scale(1.2);
+            }
+        }
+
+        &--p2 {
+            right: 0;   // i.e, 0px away from the right side of parent container
+            top: 2rem;
+
+            @include respond(tablet-port) {
+                top: -1rem;
+                transform: scale(1.3);
+                z-index: 100;
+            }            
+        }
+
+        &--p3 {
+            left: 20%;
+            top: 10rem;
+
+            @include respond(tablet-port) {
+                top: 1rem;
+                left: 0;
+                transform: scale(1.1);
+            }            
+        }
+
+        @include min-tablet-port {
+            // Apply only if minimum width is tablet-port
+            &:hover {
+                transform: scale(1.05);
+                // Bigger shadow means its closer to the user
+                box-shadow: 0 2.5rem 4rem rgba($color-black, $alpha: .5);
+                z-index: 20;
+    
+                // It's similar to setting a border (since we have set an outline-offset we have used this)
+                outline: 1.5rem solid $color-primary;
+            }
+        }
+    }
+
+    // Code to reduce scale of images which are not hovered
+    // composition:hover composition_photo:not(:hover) {}
+    // i.e., composition component as a whole is hovered but some of it's photo's are not
+    @include min-tablet-port {
+        &:hover &__photo:not(:hover) {
+            transform: scale(.95);
+        }
+    }
+}

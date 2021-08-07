@@ -1,0 +1,93 @@
+// Responsive design
+// https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design
+// In the early days of responsive design, our only option for performing layout was to use floats. 
+// Flexible floated layouts were achieved by giving each element a percentage width, and ensuring that across the layout the totals were not more than 100%.
+// We ensure that total with is not more than 100% of the available width.
+// 
+// For this website, float-based flexible grid legacy method is used. Other modern technologies for responsive layouts are multi-col, flexbox, and grid.
+
+.row {
+    // https://www.ramotion.com/agency/web-design/cssgrid/
+    // The 1140 grid fits perfectly into a 1280 monitor. On smaller monitors it becomes fluid and adapts to the width of the browser.
+    // Beyond a certain point it uses media queries to serve up a mobile version, which essentially stacks all the columns on top of each other so the flow of 
+    // information still makes sense.
+    max-width: $grid-width;
+
+    // Vertical margins are 0. Horizontal margin is auto. In short content of our rows are centered horizontally
+    margin: 0 auto;
+
+    // Below CSS applies to every row except the last-one.
+    // For example, Suppose we have two rows inside a parent element, there should be a gap between the two as well as last row should not have any bottom margin.
+    // Another example, Now suppose we have one single row inside a parent element, In this case we don't want any bottom margin and since the single row is the only and LAST child below CSS won't apply
+    &:not(:last-child) {
+        margin-bottom: $gutter-vertical;
+
+        @include respond(tab-port) {
+            margin-bottom: $gutter-vertical-small;
+        }
+    }
+
+    // Mediaquery to reduce max-width to 50rem for smaller screen sizes. Note: Value obtained using hit and trial.
+    @include respond(tablet-port) {
+        max-width: 50rem;
+        padding: 0 3rem;
+    }
+
+    // To fix issue where height of the row is reduced to zero when its elements are floated.
+    @include clearfix;
+
+    // Attribute selector
+    // select all elements where attribute starts with "col-" (it's magic of ^)
+    // * in place of ^ would have selected all elements that contained "col-"
+    // $ in place of ^ would have selected all elements that ended with "col-"
+    [class^="col-"] {
+        // How float works
+        // https://www.youtube.com/watch?v=xara4Z1b18I
+        float: left;
+    
+        // Below CSS applies to every column except the last-one.
+        // Because last-one is the last-child of its parent (i.e., row)
+        &:not(:last-child) {
+            margin-right: $gutter-horizontal;
+
+            @include respond(tablet-port) {
+                // Since columns will take whole width on small screens there is no need for right paddings
+                margin-right: 0;
+                // Since columns are given 100% width, they are no longer arranged horizontally. Now they are arranged vertcally. So there is a need for gap between two columns now.
+                margin-bottom: $gutter-vertical-small;
+            }
+        }
+
+        @include respond(tablet-port) {
+            // For small screen sizes column should have complete width 
+            width: 100% !important;
+        }
+    }
+
+    .col-1-of-2 {
+        // (Available width - (# of elements in row - 1) * horizontal gap space) / (# of elements in row)
+        // We can mix units inside calc()
+        // To use sass variables inside calc() - we have to wrap them inside #{}
+        width: calc((100% - #{$gutter-horizontal}) / 2);
+    }
+
+    .col-1-of-3 {
+        width: calc((100% - 2 * #{$gutter-horizontal}) / 3);
+    }
+
+    .col-2-of-3 {
+        width: calc(2 * ((100% - 2 * #{$gutter-horizontal}) / 3) + #{$gutter-horizontal});
+    }
+
+    .col-2-of-4 {
+        width: calc(2 * ((100% - 3 * #{$gutter-horizontal}) / 4) + #{$gutter-horizontal});
+    }
+
+    .col-1-of-4 {
+        width: calc((100% - 3 * #{$gutter-horizontal}) / 4);
+    }
+
+    .col-3-of-4 {
+        width: calc(3 * ((100% - 3 * #{$gutter-horizontal}) / 4) + 2 * #{$gutter-horizontal});
+    }
+}

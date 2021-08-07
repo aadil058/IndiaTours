@@ -1,0 +1,188 @@
+.navigation {
+    // Hide the checkbox
+    &__checkbox {
+        display: none;
+    }
+
+    &__button {
+        background-color: $color-white;
+        height: 6rem;  
+        width: 6rem;
+        border-radius: 50%;  
+        position: fixed;
+        top: 5rem;
+        right: 5rem;
+        z-index: 2000;
+        box-shadow: 0 1rem 3rem rgba($color-black, .1);
+
+        text-align: center; // To center the span icons
+        cursor: pointer;
+
+        @include respond(tablet-port) {
+            top: 2.5rem;
+            right: 2.5rem; 
+        }
+    }
+    
+    &__background {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        position: fixed;
+        top: 5.5rem;
+        right: 5.5rem;
+        background-image: radial-gradient($color-primary-light, $color-primary-dark);
+        // background should be below navigation__button and navigation__nav (i.e., list)
+        z-index: 1000;
+        // https://easings.net/#easeInOutQuint
+        transition: all .8s cubic-bezier(0.83, 0, 0.17, 1);
+
+        @include respond(tablet-port) {
+            top: 3rem;
+            right: 3rem; 
+        }
+    }
+    
+    // It will take complete height and width (Note: initially width will be zero). It will be aligned to top-right corner.
+    // 
+    &__nav {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 1500;
+
+        // Only setting opacity to zero will hide the navigation__nav element but links would still be tapable
+        // In order to make links untapable, we have to set width to 0
+        opacity: 0;
+        width: 0;
+
+        transition: all .8s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    }   
+    
+    &__list {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        list-style: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+
+    &__item {
+        margin: 1rem;
+    }    
+
+    &__link {
+        &:link,
+        &:visited {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 3rem;
+            font-weight: 300;
+            color: $color-white;
+            text-decoration: none;
+            text-transform: uppercase;
+            
+            // Background image will be 0 to 50% transparent and 50% to 100% white
+            // Gradient will be tilted at an angle of 120deg
+            background-image: linear-gradient(120deg, transparent 0%, transparent 50%, $color-white 50%);
+
+            // If we increase the backround size too much then the left side of the gradient (i.e., transparent side) will dominate the element and white color will be out of the view
+            background-size: 250%;
+            background-position: 0% 0%;
+            transition: all 0.4s;
+
+            @include respond(phone) {
+                padding: .5rem 1rem;
+                font-size: 2.5rem;
+            }
+
+            span {
+                margin-right: 1rem;
+            }
+        }
+
+        &:hover,
+        &:active {
+            // The background-position property sets the starting position of a background image.
+            // If we set position to 100% 100% then bottom right part of the gradient (i.e., white color will be visible)
+            // That movement gives us the impression that white colour is taking over
+            background-position: 100% 100%;
+            color: $color-primary;
+            transform: translateX(1rem);
+        }
+    } 
+
+    // descendant selector (space)
+    // child selector (>)
+    // adjacent sibling selector (+)
+    // general sibling selector (~)
+    &__checkbox:checked ~ &__background {
+        // Scale gradient in order to fill the screen
+        transform: scale(75);
+    }
+
+    // Make it visible again along with complete screen width
+    &__checkbox:checked ~ &__nav {
+        opacity: 1;
+        width: 100vw;
+    }   
+    
+    &__icon {
+        position: relative;
+        margin-top: 3rem;
+
+        &,
+        &::before,
+        &::after {
+            width: 3rem;
+            height: 2px;
+            background-color: $color-grey-dark-3;
+            display: inline-block;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+
+            position: absolute;
+            left: 0;
+            
+            transition: all .2s;
+        }
+
+        // Note Initially ::before and ::after pseudo elements perfectly overlapped the original element.
+        // Apply below top values in order to put one of them above the original element and one below the original element.
+        &::before { top: -.8rem; }
+        &::after { top: .8rem; }
+    }
+
+    &__button:hover &__icon::before {
+        top: -1rem;
+    }
+
+    &__button:hover &__icon::after {
+        top: 1rem;
+    }
+
+    // When checkbox is selected we selected its sibling i.e., navigation__button and then select navigation__button's child icon in order to modify it
+    &__checkbox:checked + &__button &__icon {
+        // Make the actual element (center horizontal bar) transparent
+        background-color: transparent;
+    }
+
+    // Now that actual element (center horizontal bar) is hidden we can make cross with the ::after and ::before pseduo elements
+    // Applying top: 0 we center them and they would overlap each other. We then move one of then 135 in one direction and other 135deg in exact opposite direction in order to make a cross
+    &__checkbox:checked + &__button &__icon::before {
+        top: 0;
+        transform: rotate(135deg);
+    }
+
+    &__checkbox:checked + &__button &__icon::after {
+        top: 0;
+        transform: rotate(-135deg);
+    }
+}

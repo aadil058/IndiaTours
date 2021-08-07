@@ -1,0 +1,104 @@
+// It's subjective to put this class in typogyaphy. It could also have been in component.
+// But since it mostly deals with text styling we can put it here.
+.heading-primary {
+    color: $color-white;
+    text-transform: uppercase;
+    margin-bottom: 6rem;
+
+    &--main {
+        // block (Displays an element as a block element (like <p>). It starts on a new line, and takes up the whole available width)
+        display: block;
+        font-size: 6rem;
+        font-weight: 400;
+        letter-spacing: 3.5rem;
+        animation: moveInLeft 1s ease-out;
+
+        @include respond(phone) {
+            letter-spacing: 1rem;
+            font-size: 4.5rem;
+        }
+    }
+    
+    &--sub {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 1.25rem;
+        animation: moveInRight 1s ease-out;
+
+        @include respond(phone) {
+            letter-spacing: .5rem;
+        }
+    }
+}
+
+.heading-secondary {
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+
+    // 'block' elements takes total available width. Using it would have caused gradient to take all available width (in this case 114rem)
+    // background-clip: text; would have captures only the center of the gradient. 
+
+    // 'inline-block' element would wrap the text. In short gradient would be as wide as the text
+    // In this case background-clip: text; would capture whole gradient very nicely.
+    display: inline-block;
+
+    background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+
+    // Clip background gradient only to texts. Without it text will appear on top of background gradient and gradient will fill the element's background.
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    // Change text color to transparent in order for background gradient to be visible inside the text
+    color: transparent;
+
+    letter-spacing: 2px;
+    
+    // Without below line transitions won't be smooth when text is hovered
+    transition: all .2s;
+
+    @include respond(tablet-port) {
+        font-size: 3rem;
+    }
+
+    @include respond(phone) {
+        font-size: 2.5rem;
+    }    
+
+    &:hover {
+        transform: skewY(2deg) skewX(15deg) scale(1.1);
+        // x-direction, y-direction, off-blur, color
+        // text-shadow: h-shadow v-shadow blur-radius color|none|initial|inherit;
+        text-shadow: .5rem 1rem 2rem rgba($color-black, $alpha: .2);
+    }
+}
+
+.heading-tertiary {
+    font-size: $default-font-size;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    @include respond(phone) {
+        font-size: 1.4rem;
+    }    
+}
+
+.paragraph {
+    font-size: $default-font-size;
+   
+    // All paragraphs except the last paragraph in a container should have a bottom margin
+    &:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+}
+
+/* Apply font property using body element selector. We do this because properties related to fonts are usually inherited. Using this approach is more efficient and popular approach 
+than using universal selector */
+body {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    /* Default text Color */
+    color: $color-grey-dark;
+}
