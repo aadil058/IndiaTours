@@ -14,6 +14,14 @@
     visibility: hidden;
     transition: all .3s;
 
+    // Graceful degradation
+    // If browser supports below modern css property then apply the provided css
+    @supports (-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px)) {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        background-color: rgba($color-black, .3);
+    }
+
     // div html element with id popup is a target as soon as book now! buttons are pressed
     // div html element also has popup css class
     // so popup:target class becomes active on book now! button press
