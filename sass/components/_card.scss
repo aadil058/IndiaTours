@@ -178,7 +178,11 @@
         font-weight: 100;
     }
 
-    @include respond(tablet-port) {
+    // @include respond(tablet-port) will not work for touch devices with width > tablet-port
+    // @include respond(tablet-port) {
+    // We don't want to use hover effect in touch devices even if screen's width is greater than tablet-port
+    // So apply below CSS if screen's width is less than tablet-port or we are on a device that don't support hover
+    @media only screen and (max-width: 56.25em), only screen and (hover:none)  {
         // We had put height to make front side and back side height same size but we no longer have back side, so we can set it to auto
         height: auto;
         border-radius: 3px;

@@ -56,3 +56,9 @@ html {
         font-size: 75.0%; // 1rem == 12px, 9/16 == 75%
     }
 }
+
+// Select the element highlighted by user
+::selection {
+    background-color: $color-primary;
+    color: $color-white;
+}
